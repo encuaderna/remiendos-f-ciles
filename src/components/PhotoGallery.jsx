@@ -1,33 +1,83 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Camera, X, ZoomIn } from "lucide-react";
-import { useLocalStorage } from "@/lib/useLocalStorage";
+
+// Compress image to base64 via canvas to avoid hitting localStorage ~5MB limit
+function compressImage(file, maxWidth = 1200, quality = 0.75) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const scale = Math.min(1, maxWidth / img.width);
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL("image/jpeg", quality));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+    img.src = url;
+  });
+}
+
+function loadPhotos(guideId) {
+  try {
+    return JSON.parse(localStorage.getItem(`remiendos-photos-${guideId}`)) || [];
+  } catch {
+    return [];
+  }
+}
+
+function savePhotos(guideId, photos) {
+  try {
+    localStorage.setItem(`remiendos-photos-${guideId}`, JSON.stringify(photos));
+  } catch {
+    // Storage quota exceeded — silently fail
+  }
+}
 
 export default function PhotoGallery({ guideId }) {
-  const storageKey = `remiendos-photos-${guideId}`;
-  const [photos, setPhotos] = useLocalStorage(storageKey, []);
-  const [lightbox, setLightbox] = useState(null); // index of photo to show
+  // Re-initialize state when guideId changes (fix: hook with dynamic key)
+  const [photos, setPhotosState] = useState(() => loadPhotos(guideId));
+  const [lightbox, setLightbox] = useState(null);
   const inputRef = useRef(null);
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    files.forEach((file) => {
-      if (!file.type.startsWith("image/")) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        setPhotos((prev) => [
-          ...prev,
-          { dataUrl: ev.target.result, label: "", date: new Date().toLocaleDateString("es-CL") },
-        ]);
-      };
-      reader.readAsDataURL(file);
+  useEffect(() => {
+    setPhotosState(loadPhotos(guideId));
+    setLightbox(null);
+  }, [guideId]);
+
+  const setPhotos = (updater) => {
+    setPhotosState((prev) => {
+      const next = typeof updater === "function" ? updater(prev) : updater;
+      savePhotos(guideId, next);
+      return next;
     });
-    // Reset input so same file can be re-selected
+  };
+
+  const handleFileChange = async (e) => {
+    const files = Array.from(e.target.files);
+    for (const file of files) {
+      if (!file.type.startsWith("image/")) continue;
+      const dataUrl = await compressImage(file);
+      if (!dataUrl) continue;
+      setPhotos((prev) => [
+        ...prev,
+        { dataUrl, label: "", date: new Date().toLocaleDateString("es-CL") },
+      ]);
+    }
     e.target.value = "";
   };
 
   const removePhoto = (idx) => {
     setPhotos((prev) => prev.filter((_, i) => i !== idx));
-    if (lightbox === idx) setLightbox(null);
+    // Fix: adjust lightbox index after removal
+    setLightbox((prev) => {
+      if (prev === null) return null;
+      if (prev === idx) return null;
+      if (prev > idx) return prev - 1;
+      return prev;
+    });
   };
 
   const updateLabel = (idx, label) => {
@@ -46,12 +96,12 @@ export default function PhotoGallery({ guideId }) {
         >
           + Agregar foto
         </button>
+        {/* No capture="environment" — allows gallery + camera on mobile, files on desktop */}
         <input
           ref={inputRef}
           type="file"
           accept="image/*"
           multiple
-          capture="environment"
           className="hidden"
           onChange={handleFileChange}
         />
@@ -79,14 +129,14 @@ export default function PhotoGallery({ guideId }) {
                 <ZoomIn className="h-5 w-5 text-white drop-shadow" />
               </div>
               <button
-                onClick={() => removePhoto(idx)}
+                onClick={(e) => { e.stopPropagation(); removePhoto(idx); }}
                 className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
                 aria-label="Eliminar foto"
               >
                 <X className="h-3 w-3" />
               </button>
               {photo.date && (
-                <span className="absolute bottom-1 left-1 text-xs bg-black/50 text-white rounded px-1">
+                <span className="absolute bottom-1 left-1 text-xs bg-black/50 text-white rounded px-1 pointer-events-none">
                   {photo.date}
                 </span>
               )}

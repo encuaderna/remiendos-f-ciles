@@ -229,7 +229,7 @@ export default function GuideDetail() {
       </div>
 
       {/* Photo gallery */}
-      <PhotoGallery guideId={guide.id} />
+      <PhotoGallery key={guide.id} guideId={guide.id} />
 
       {/* Mark complete */}
       <Button
