@@ -172,8 +172,10 @@ export default function Progress() {
         {displayGuides.map((guide) => {
           const isDone = completed.includes(guide.id);
           const isFav = favorites.includes(guide.id);
-          const noteData = notes[guide.id];
-          const hasNote = !!noteData;
+          const rawNote = notes[guide.id];
+          // Support both old string format and new {text, tag} format
+          const noteData = rawNote && typeof rawNote === "string" ? { text: rawNote, tag: "" } : rawNote;
+          const hasNote = !!noteData?.text;
           const isEditing = editingNote === guide.id;
 
           return (

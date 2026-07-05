@@ -31,9 +31,9 @@ export default function GuideDetail() {
   const [showModal, setShowModal] = useState(false);
 
   // Track last visited
-  React.useEffect(() => {
+  useEffect(() => {
     if (guide) setLastVisited(guide.id);
-  }, [guide?.id]);
+  }, [id]);
 
   if (!guide) {
     return (
