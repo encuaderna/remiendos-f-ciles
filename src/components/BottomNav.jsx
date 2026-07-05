@@ -14,7 +14,9 @@ export default function BottomNav() {
   const { pathname } = useLocation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur border-t border-border md:hidden"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+    >
       <div className="flex justify-around items-center h-16 px-1">
         {NAV_ITEMS.map(({ path, label, icon: Icon }) => {
           const active = path === "/" ? pathname === "/" : pathname.startsWith(path);
@@ -22,14 +24,17 @@ export default function BottomNav() {
             <Link
               key={path}
               to={path}
-              className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg transition-colors text-xs
-                ${active
-                  ? "text-primary font-semibold"
-                  : "text-muted-foreground"
-                }`}
+              className={`relative flex flex-col items-center justify-center gap-0.5 flex-1 py-2 rounded-xl transition-all active:scale-90
+                ${active ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}
             >
-              <Icon className={`h-5 w-5 ${active ? "text-primary" : ""}`} />
-              <span className="leading-tight">{label}</span>
+              {/* Active pill background */}
+              {active && (
+                <span className="absolute inset-x-2 top-1 bottom-1 rounded-xl bg-primary/10" />
+              )}
+              <Icon className={`relative h-5 w-5 transition-transform ${active ? "scale-110" : ""}`} />
+              <span className={`relative text-[10px] leading-tight font-medium ${active ? "font-semibold" : ""}`}>
+                {label}
+              </span>
             </Link>
           );
         })}

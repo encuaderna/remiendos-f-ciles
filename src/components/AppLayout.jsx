@@ -16,7 +16,7 @@ export default function AppLayout() {
     <div className="min-h-screen bg-background transition-colors">
       <SideNav dark={dark} setDark={setDark} />
       <MobileHeader dark={dark} setDark={setDark} />
-      <main className="md:ml-56 lg:ml-64 pb-20 md:pb-8">
+      <main className="md:ml-56 lg:ml-64 pb-24 md:pb-8">
         <div className="max-w-3xl mx-auto px-4 py-6 md:py-10">
           <Outlet />
         </div>
