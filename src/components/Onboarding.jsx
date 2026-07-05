@@ -83,6 +83,10 @@ export default function Onboarding({ onFinish }) {
           ))}
         </div>
 
+        <p className="text-center text-xs text-muted-foreground">
+          Puedes ajustar tu ruta cuando quieras desde el inicio.
+        </p>
+
         {step > 0 && (
           <button onClick={() => setStep(step - 1)} className="w-full text-center text-sm text-muted-foreground hover:text-foreground">
             ← Volver
