@@ -5,6 +5,7 @@ import { GUIDES, LEVELS } from "@/lib/guides-data";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { Button } from "@/components/ui/button";
 import CompletionModal from "@/components/CompletionModal";
+import PhotoGallery from "@/components/PhotoGallery";
 
 const levelColors = {
   basico: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300",
@@ -226,6 +227,9 @@ export default function GuideDetail() {
           ))}
         </ul>
       </div>
+
+      {/* Photo gallery */}
+      <PhotoGallery guideId={guide.id} />
 
       {/* Mark complete */}
       <Button
