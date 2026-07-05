@@ -11,6 +11,8 @@ export const GUIDES = [
     id: "basta",
     title: "Hacer una basta",
     level: "basico",
+    time: "20–30 min",
+    difficulty: 1,
     when: "Cuando un pantalón, falda o vestido queda muy largo y necesitas acortarlo sin cortar la tela.",
     materials: ["Aguja de coser", "Hilo del color de la prenda", "Tijeras", "Alfileres", "Cinta métrica", "Plancha (opcional)"],
     steps: [
@@ -32,12 +34,16 @@ export const GUIDES = [
       "Si la tela es gruesa, usa una aguja más grande.",
       "Planchar el doblez antes de coser facilita mucho el trabajo.",
       "Para telas que se deshilachan, dobla dos veces el borde."
-    ]
+    ],
+    easier: null,
+    next: "parche"
   },
   {
     id: "parche",
     title: "Colocar un parche",
     level: "basico",
+    time: "15–20 min",
+    difficulty: 1,
     when: "Cuando una prenda tiene un agujero o desgaste que quieres cubrir y reforzar.",
     materials: ["Retazo de tela (un poco más grande que el agujero)", "Aguja de coser", "Hilo", "Tijeras", "Alfileres"],
     steps: [
@@ -58,12 +64,16 @@ export const GUIDES = [
       "Elige una tela de peso similar a la prenda.",
       "Un parche decorativo puede ser un detalle bonito — usa telas de colores o estampadas.",
       "Para jeans, usa tela de mezclilla y puntadas fuertes."
-    ]
+    ],
+    easier: "basta",
+    next: "boton"
   },
   {
     id: "boton",
     title: "Volver a coser un botón",
     level: "basico",
+    time: "10–15 min",
+    difficulty: 1,
     when: "Cuando un botón se cayó o está flojo y necesitas fijarlo de nuevo.",
     materials: ["Aguja de coser", "Hilo resistente", "Tijeras", "El botón (o uno de repuesto)"],
     steps: [
@@ -85,12 +95,16 @@ export const GUIDES = [
       "El truco del alfiler o fósforo es clave para que el botón quede con espacio para abotonarse.",
       "Si el botón tiene 4 hoyitos, cose primero un par y luego el otro formando una cruz o líneas paralelas.",
       "Guarda siempre los botones extra que vienen con la ropa nueva."
-    ]
+    ],
+    easier: "parche",
+    next: "costura-abierta"
   },
   {
     id: "punto-corrido",
     title: "Recoger un punto corrido en un chaleco",
     level: "intermedio",
+    time: "20–30 min",
+    difficulty: 2,
     when: "Cuando un punto del tejido se soltó y se está corriendo formando una línea vertical de malla abierta.",
     materials: ["Aguja de crochet fina (o un alfiler de gancho)", "Aguja de coser", "Hilo del color del chaleco"],
     steps: [
@@ -111,12 +125,16 @@ export const GUIDES = [
       "Trabaja en buena luz para ver los puntos.",
       "Si no tienes aguja de crochet, un alfiler de gancho grueso puede servir.",
       "Practica primero con un tejido viejo."
-    ]
+    ],
+    easier: "costura-abierta",
+    next: "elastico"
   },
   {
     id: "costura-abierta",
     title: "Cerrar una costura abierta",
     level: "basico",
+    time: "10–15 min",
+    difficulty: 1,
     when: "Cuando una costura se descosió — en axilas, entrepierna, costados o cualquier unión de telas.",
     materials: ["Aguja de coser", "Hilo resistente del color de la prenda", "Tijeras", "Alfileres"],
     steps: [
@@ -138,12 +156,16 @@ export const GUIDES = [
       "La puntada atrás es la más resistente para cerrar costuras.",
       "En zonas de mucho movimiento (axilas, entrepierna) usa hilo doble.",
       "Si la tela está muy gastada en los bordes, refuerza con un retazo por dentro."
-    ]
+    ],
+    easier: "boton",
+    next: "punto-corrido"
   },
   {
     id: "elastico",
     title: "Cambiar o pasar un elástico",
     level: "intermedio",
+    time: "25–35 min",
+    difficulty: 2,
     when: "Cuando el elástico de la cintura, puños o tobillos se estiró y la prenda ya no ajusta bien.",
     materials: ["Elástico nuevo del ancho adecuado", "Alfiler de gancho grande (imperdible)", "Aguja de coser", "Hilo", "Tijeras", "Descosedor o tijera pequeña"],
     steps: [
@@ -167,12 +189,16 @@ export const GUIDES = [
       "El alfiler de gancho es tu mejor herramienta para pasar elásticos.",
       "Si la jareta es muy larga, ve arruchando poco a poco.",
       "Prueba el largo del elástico antes de coser las puntas."
-    ]
+    ],
+    easier: "costura-abierta",
+    next: "deshacer-chaleco"
   },
   {
     id: "deshacer-chaleco",
     title: "Deshacer un chaleco para reutilizar la lana",
     level: "avanzado",
+    time: "60–90 min",
+    difficulty: 3,
     when: "Cuando tienes un chaleco de lana que ya no usas y quieres recuperar la lana para tejer algo nuevo.",
     materials: ["El chaleco de lana", "Tijeras", "Descosedor", "Ovillos o cartón para enrollar la lana"],
     steps: [
@@ -195,12 +221,16 @@ export const GUIDES = [
       "Trabaja con paciencia, es un proceso lento pero satisfactorio.",
       "La lana recuperada es perfecta para proyectos multicolor.",
       "Si la lana está muy apolillada o frágil, puede que no valga la pena deshacerla."
-    ]
+    ],
+    easier: "elastico",
+    next: "transformar-ropa"
   },
   {
     id: "transformar-ropa",
     title: "Transformar ropa vieja en nuevos usos",
     level: "avanzado",
+    time: "45–60 min",
+    difficulty: 3,
     when: "Cuando tienes prendas que ya no usas pero la tela todavía está buena y quieres darle una segunda vida.",
     materials: ["Ropa vieja con tela en buen estado", "Tijeras", "Aguja de coser", "Hilo", "Alfileres", "Cinta métrica", "Lápiz o tiza de tela"],
     steps: [
@@ -223,7 +253,28 @@ export const GUIDES = [
       "Las camisas de hombre sirven para hacer bolsas y fundas de cojín.",
       "Los jeans viejos dan tela muy resistente para bolsos y estuches.",
       "Combina telas de diferentes prendas para diseños únicos."
-    ]
+    ],
+    easier: "deshacer-chaleco",
+    next: null
+  }
+];
+
+export const LEARNING_PATHS = [
+  {
+    id: "principiante",
+    title: "Ruta Principiante",
+    emoji: "🌱",
+    description: "Empieza desde cero con las técnicas más usadas en el día a día.",
+    guideIds: ["boton", "costura-abierta", "parche", "basta"],
+    color: "emerald"
+  },
+  {
+    id: "reciclaje",
+    title: "Ruta Reciclaje",
+    emoji: "♻️",
+    description: "Dale una segunda vida a tu ropa con proyectos de upcycling.",
+    guideIds: ["parche", "elastico", "deshacer-chaleco", "transformar-ropa"],
+    color: "sky"
   }
 ];
 
@@ -249,4 +300,11 @@ export const RECYCLING_IDEAS = [
   { title: "Rodilleras", description: "Corta parches ovalados de tela gruesa y cóselos por dentro de pantalones en la zona de las rodillas para reforzarlos.", source: "Jeans, tela gruesa", difficulty: "Intermedio" },
   { title: "Bolsitas para guardar cosas", description: "Pequeñas bolsas con cordón para guardar jabón, joyas, monedas o hierbas. Usa telas suaves y ligeras.", source: "Camisas, blusas, telas livianas", difficulty: "Intermedio" },
   { title: "Trapos de limpieza", description: "Las camisetas viejas de algodón son los mejores trapos. No sueltan pelusa y absorben bien. Simplemente córtalas en pedazos.", source: "Camisetas, ropa interior de algodón", difficulty: "Básico" }
+];
+
+export const SECURITY_TIPS = [
+  { icon: "✂️", title: "Tijeras", tip: "Siempre corta alejando la tijera de tu cuerpo. Cuando las pases a otra persona, hazlo con las puntas hacia abajo o cerradas. Guárdalas fuera del alcance de niñas/os pequeños." },
+  { icon: "🪡", title: "Agujas y alfileres", tip: "Trabaja en una superficie plana y con buena luz. Cuenta los alfileres antes y después de usarlos. Si cae una aguja al suelo, búscala de inmediato antes de pararte." },
+  { icon: "🔥", title: "Plancha", tip: "Nunca dejes la plancha caliente sin vigilancia. Ponla siempre de pie o en su base. Desenchúfala al terminar y deja enfriar antes de guardar. Usa un paño húmedo para telas delicadas." },
+  { icon: "💡", title: "Iluminación", tip: "Cose siempre con buena luz para evitar forzar la vista y tener mejor control de la aguja. Una lámpara de escritorio orientada a la tela hace una gran diferencia." }
 ];
