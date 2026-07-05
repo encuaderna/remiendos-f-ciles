@@ -14,6 +14,7 @@ import GuideDetail from '@/pages/GuideDetail';
 import Recycling from '@/pages/Recycling';
 import Progress from '@/pages/Progress';
 import Inspiration from '@/pages/Inspiration';
+import Settings from '@/pages/Settings';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -45,6 +46,7 @@ const AuthenticatedApp = () => {
         <Route path="/reciclaje" element={<Recycling />} />
         <Route path="/progreso" element={<Progress />} />
         <Route path="/inspiracion" element={<Inspiration />} />
+        <Route path="/ajustes" element={<Settings />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

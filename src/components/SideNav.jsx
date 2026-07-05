@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, BookOpen, Recycle, ClipboardCheck, Wrench, Sparkles } from "lucide-react";
+import { Home, BookOpen, Recycle, ClipboardCheck, Wrench, Sparkles, Settings } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const NAV_ITEMS = [
@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { path: "/inspiracion", label: "Tablero de Inspiración", icon: Sparkles },
   { path: "/reciclaje", label: "Reciclaje", icon: Recycle },
   { path: "/progreso", label: "Mi progreso", icon: ClipboardCheck },
+  { path: "/ajustes", label: "Ajustes", icon: Settings },
 ];
 
 export default function SideNav({ dark, setDark }) {
@@ -42,9 +43,8 @@ export default function SideNav({ dark, setDark }) {
           );
         })}
       </nav>
-      <div className="p-4 border-t border-border flex items-center gap-2">
+      <div className="p-4 border-t border-border">
         <ThemeToggle dark={dark} setDark={setDark} />
-        <span className="text-xs text-muted-foreground">Modo {dark ? "oscuro" : "claro"}</span>
       </div>
     </aside>
   );
