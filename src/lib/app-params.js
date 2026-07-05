@@ -34,6 +34,19 @@ const getAppParamValue = (paramName, { defaultValue = undefined, removeFromUrl =
 	return null;
 }
 
+const isSafeRedirectUrl = (url) => {
+	if (!url) return false;
+	// Allow only relative paths starting with / but not //
+	if (url.startsWith('/') && !url.startsWith('//')) return true;
+	// Allow same-origin absolute URLs
+	try {
+		const parsed = new URL(url);
+		return parsed.origin === window.location.origin;
+	} catch {
+		return false;
+	}
+};
+
 const getAppParams = () => {
 	if (getAppParamValue("clear_access_token") === 'true') {
 		storage.removeItem('base44_access_token');
@@ -42,7 +55,7 @@ const getAppParams = () => {
 	return {
 		appId: getAppParamValue("app_id", { defaultValue: import.meta.env.VITE_BASE44_APP_ID }),
 		token: getAppParamValue("access_token", { removeFromUrl: true }),
-		fromUrl: getAppParamValue("from_url", { defaultValue: window.location.href }),
+		fromUrl: (() => { const v = getAppParamValue("from_url", { defaultValue: window.location.href }); return isSafeRedirectUrl(v) ? v : '/'; })(),
 		functionsVersion: getAppParamValue("functions_version", { defaultValue: import.meta.env.VITE_BASE44_FUNCTIONS_VERSION }),
 		appBaseUrl: getAppParamValue("app_base_url", { defaultValue: import.meta.env.VITE_BASE44_APP_BASE_URL }),
 	}
