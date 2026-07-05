@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, Trash2, ChevronRight, Heart, ArrowRight } from "lucide-react";
-import { GUIDES, LEVELS } from "@/lib/guides-data";
+import { Check, Trash2, ChevronRight, Heart, ArrowRight, Trophy } from "lucide-react";
+import { GUIDES, LEVELS, LEARNING_PATHS } from "@/lib/guides-data";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,6 +15,26 @@ const levelColors = {
 };
 
 const byLevel = (level) => GUIDES.filter((g) => g.level === level);
+
+function getNextMilestone(completed) {
+  for (const path of LEARNING_PATHS) {
+    const remaining = path.guideIds.filter((id) => !completed.includes(id));
+    if (remaining.length === 0) continue; // already unlocked
+    const done = path.guideIds.filter((id) => completed.includes(id)).length;
+    if (done === 0 && remaining.length === path.guideIds.length) {
+      // Haven't started this path yet — show only if close in terms of required level
+      const neededLevels = [...new Set(remaining.map((id) => GUIDES.find((g) => g.id === id)?.level))];
+      const basicNeeded = neededLevels.includes("basico");
+      if (!basicNeeded) continue;
+    }
+    const neededCount = remaining.length;
+    // Find the level of the next guide needed
+    const nextGuide = GUIDES.find((g) => g.id === remaining[0]);
+    const levelLabel = nextGuide ? LEVELS[nextGuide.level]?.label : "";
+    return { path, neededCount, levelLabel };
+  }
+  return null;
+}
 
 export default function Progress() {
   const [completed, setCompleted] = useLocalStorage("remiendos-completed", []);
@@ -31,6 +51,7 @@ export default function Progress() {
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
   const lastGuide = lastVisited ? GUIDES.find((g) => g.id === lastVisited) : null;
+  const nextMilestone = done < total ? getNextMilestone(completed) : null;
   const favGuides = GUIDES.filter((g) => favorites.includes(g.id));
   const displayGuides = activeTab === "favoritas" ? favGuides : GUIDES;
 
@@ -130,6 +151,30 @@ export default function Progress() {
           </div>
         </div>
       </div>
+
+      {/* Next milestone */}
+      {nextMilestone && (
+        <div className="flex items-start gap-3 bg-card rounded-2xl p-4 border border-border shadow-sm">
+          <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Trophy className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-primary uppercase tracking-wide mb-0.5">Siguiente hito</p>
+            <p className="text-sm text-foreground leading-snug">
+              Completando{" "}
+              <span className="font-semibold">
+                {nextMilestone.neededCount} guía{nextMilestone.neededCount !== 1 ? "s" : ""}
+                {nextMilestone.levelLabel ? ` de nivel ${nextMilestone.levelLabel}` : ""}
+              </span>{" "}
+              más desbloqueas la{" "}
+              <Link to="/guias" className="font-semibold text-primary hover:underline">
+                {nextMilestone.path.emoji} {nextMilestone.path.title}
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Continue where you left off */}
       {lastGuide && (
