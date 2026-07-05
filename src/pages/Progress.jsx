@@ -231,8 +231,8 @@ export default function Progress() {
                             onClick={() => setNoteTag(noteTag === tag ? "" : tag)}
                             className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
                               noteTag === tag
-                                ? "bg-amber-500 border-amber-500 text-white"
-                                : "border-zinc-300 dark:border-zinc-600 text-zinc-600 dark:text-zinc-400 hover:border-amber-400"
+                                ? "bg-primary border-primary text-primary-foreground"
+                                : "border-border text-muted-foreground hover:border-primary"
                             }`}
                           >
                             {tag}
@@ -240,7 +240,7 @@ export default function Progress() {
                         ))}
                       </div>
                       <div className="flex gap-2">
-                        <Button size="sm" onClick={() => saveNote(guide.id)} className="rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs">
+                        <Button size="sm" onClick={() => saveNote(guide.id)} className="rounded-lg text-xs">
                           Guardar
                         </Button>
                         <Button size="sm" variant="ghost" onClick={() => setEditingNote(null)} className="rounded-lg text-xs">
@@ -249,16 +249,16 @@ export default function Progress() {
                       </div>
                     </div>
                   ) : hasNote ? (
-                    <div className="mt-2 bg-amber-50 dark:bg-amber-900/20 rounded-xl p-3 border border-amber-200 dark:border-amber-800/40">
+                    <div className="mt-2 bg-primary/5 rounded-xl p-3 border border-primary/20">
                       {noteData.tag && (
-                        <span className="inline-block text-xs bg-amber-200 dark:bg-amber-800/60 text-amber-800 dark:text-amber-300 rounded-full px-2 py-0.5 mb-1">
+                        <span className="inline-block text-xs bg-primary/15 text-primary rounded-full px-2 py-0.5 mb-1">
                           {noteData.tag}
                         </span>
                       )}
-                      <p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">{noteData.text || noteData}</p>
+                      <p className="text-sm text-foreground/80 whitespace-pre-wrap">{noteData.text || noteData}</p>
                       <div className="flex gap-2 mt-2">
-                        <button onClick={() => startNote(guide.id)} className="text-xs text-amber-700 dark:text-amber-400 hover:underline">Editar</button>
-                        <button onClick={() => deleteNote(guide.id)} className="text-xs text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-0.5">
+                        <button onClick={() => startNote(guide.id)} className="text-xs text-primary hover:underline">Editar</button>
+                        <button onClick={() => deleteNote(guide.id)} className="text-xs text-destructive hover:underline flex items-center gap-0.5">
                           <Trash2 className="h-3 w-3" /> Borrar
                         </button>
                       </div>
@@ -266,7 +266,7 @@ export default function Progress() {
                   ) : (
                     <button
                       onClick={() => startNote(guide.id)}
-                      className="mt-1.5 text-xs text-amber-600 dark:text-amber-400 hover:underline"
+                      className="mt-1.5 text-xs text-primary hover:underline"
                     >
                       + Agregar nota
                     </button>

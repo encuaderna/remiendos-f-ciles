@@ -38,10 +38,9 @@ export default function Inspiration() {
   const [editText, setEditText] = useState("");
   const inputRef = useRef(null);
 
-  // Form state
   const [formNote, setFormNote] = useState("");
   const [formTag, setFormTag] = useState("");
-  const [formImage, setFormImage] = useState(null); // base64
+  const [formImage, setFormImage] = useState(null);
 
   const persist = (next) => { setIdeas(next); saveIdeas(next); };
 
@@ -89,16 +88,16 @@ export default function Inspiration() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading text-2xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-amber-500" /> Tablero de Inspiración
+          <h1 className="font-heading text-2xl font-bold text-foreground flex items-center gap-2">
+            <Sparkles className="h-6 w-6 text-primary" /> Tablero de Inspiración
           </h1>
-          <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             Guarda ideas y fotos de prendas que quieres reciclar más adelante.
           </p>
         </div>
         <button
           onClick={() => setShowForm((v) => !v)}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium transition-colors"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-medium transition-colors"
         >
           <Plus className="h-4 w-4" /> Nueva idea
         </button>
@@ -106,14 +105,14 @@ export default function Inspiration() {
 
       {/* Add form */}
       {showForm && (
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-amber-200 dark:border-amber-800/40 shadow-sm space-y-4">
-          <p className="font-semibold text-zinc-800 dark:text-zinc-100 text-sm">Agregar nueva idea</p>
+        <div className="bg-card rounded-2xl p-5 border border-border shadow-sm space-y-4">
+          <p className="font-semibold text-foreground text-sm">Agregar nueva idea</p>
 
           {/* Image picker */}
           <div
             onClick={() => inputRef.current?.click()}
             className={`relative rounded-xl border-2 border-dashed cursor-pointer transition-colors flex items-center justify-center overflow-hidden
-              ${formImage ? "border-transparent h-40" : "border-zinc-300 dark:border-zinc-700 h-28 hover:border-amber-400"}`}
+              ${formImage ? "border-transparent h-40" : "border-border h-28 hover:border-primary"}`}
           >
             {formImage ? (
               <>
@@ -126,7 +125,7 @@ export default function Inspiration() {
                 </button>
               </>
             ) : (
-              <span className="text-sm text-zinc-400">📷 Toca para agregar una foto (opcional)</span>
+              <span className="text-sm text-muted-foreground">📷 Toca para agregar una foto (opcional)</span>
             )}
           </div>
           <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
@@ -137,7 +136,7 @@ export default function Inspiration() {
             onChange={(e) => setFormNote(e.target.value)}
             placeholder="Escribe tu idea, ej: 'Convertir este jean en bolso'…"
             rows={3}
-            className="w-full text-sm rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 p-3 text-zinc-800 dark:text-zinc-200 resize-none focus:outline-none focus:ring-2 focus:ring-amber-400 placeholder:text-zinc-400"
+            className="w-full text-sm rounded-xl border border-input bg-background p-3 text-foreground resize-none focus:outline-none focus:ring-2 focus:ring-ring placeholder:text-muted-foreground"
           />
 
           {/* Tags */}
@@ -148,8 +147,8 @@ export default function Inspiration() {
                 onClick={() => setFormTag(formTag === tag ? "" : tag)}
                 className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
                   formTag === tag
-                    ? "bg-amber-500 border-amber-500 text-white"
-                    : "border-zinc-300 dark:border-zinc-600 text-zinc-600 dark:text-zinc-400 hover:border-amber-400"
+                    ? "bg-primary border-primary text-primary-foreground"
+                    : "border-border text-muted-foreground hover:border-primary"
                 }`}
               >
                 {tag}
@@ -161,13 +160,13 @@ export default function Inspiration() {
             <button
               onClick={handleAdd}
               disabled={!formNote.trim() && !formImage}
-              className="flex-1 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 disabled:opacity-40 text-white text-sm font-medium transition-colors"
+              className="flex-1 py-2 rounded-xl bg-primary hover:bg-primary/90 disabled:opacity-40 text-primary-foreground text-sm font-medium transition-colors"
             >
               Guardar idea
             </button>
             <button
               onClick={() => { setShowForm(false); setFormNote(""); setFormTag(""); setFormImage(null); }}
-              className="px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+              className="px-4 py-2 rounded-xl bg-muted/50 text-muted-foreground text-sm hover:bg-muted transition-colors"
             >
               Cancelar
             </button>
@@ -179,8 +178,8 @@ export default function Inspiration() {
       {ideas.length === 0 && !showForm && (
         <div className="text-center py-16 space-y-3">
           <span className="text-5xl">✨</span>
-          <p className="text-zinc-500 dark:text-zinc-400 text-sm">Aún no tienes ideas guardadas.</p>
-          <p className="text-xs text-zinc-400">Toca "Nueva idea" para empezar tu tablero.</p>
+          <p className="text-muted-foreground text-sm">Aún no tienes ideas guardadas.</p>
+          <p className="text-xs text-muted-foreground/70">Toca "Nueva idea" para empezar tu tablero.</p>
         </div>
       )}
 
@@ -190,7 +189,7 @@ export default function Inspiration() {
           {ideas.map((idea) => (
             <div
               key={idea.id}
-              className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden flex flex-col"
+              className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden flex flex-col"
             >
               {/* Image */}
               {idea.image && (
@@ -207,7 +206,7 @@ export default function Inspiration() {
 
               <div className="p-3 flex-1 flex flex-col gap-2">
                 {idea.tag && (
-                  <span className="self-start text-xs px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-medium">
+                  <span className="self-start text-xs px-2 py-0.5 rounded-full bg-primary/15 text-primary font-medium">
                     {idea.tag}
                   </span>
                 )}
@@ -220,25 +219,25 @@ export default function Inspiration() {
                       value={editText}
                       onChange={(e) => setEditText(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && saveEdit(idea.id)}
-                      className="flex-1 text-xs rounded-lg border border-zinc-300 dark:border-zinc-600 bg-zinc-50 dark:bg-zinc-800 px-2 py-1 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-amber-400"
+                      className="flex-1 text-xs rounded-lg border border-input bg-background px-2 py-1 text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
                     />
-                    <button onClick={() => saveEdit(idea.id)} className="text-emerald-600 dark:text-emerald-400">
+                    <button onClick={() => saveEdit(idea.id)} className="text-primary">
                       <Check className="h-4 w-4" />
                     </button>
                   </div>
                 ) : (
                   idea.note && (
-                    <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed flex-1">{idea.note}</p>
+                    <p className="text-xs text-foreground/80 leading-relaxed flex-1">{idea.note}</p>
                   )
                 )}
 
                 <div className="flex items-center justify-between mt-auto pt-1">
-                  <span className="text-xs text-zinc-400">{idea.date}</span>
+                  <span className="text-xs text-muted-foreground">{idea.date}</span>
                   <div className="flex gap-2">
-                    <button onClick={() => startEdit(idea)} className="text-zinc-400 hover:text-amber-500 transition-colors">
+                    <button onClick={() => startEdit(idea)} className="text-muted-foreground hover:text-primary transition-colors">
                       <Pencil className="h-3.5 w-3.5" />
                     </button>
-                    <button onClick={() => handleDelete(idea.id)} className="text-zinc-400 hover:text-rose-500 transition-colors">
+                    <button onClick={() => handleDelete(idea.id)} className="text-muted-foreground hover:text-destructive transition-colors">
                       <X className="h-3.5 w-3.5" />
                     </button>
                   </div>
@@ -260,7 +259,7 @@ export default function Inspiration() {
             {lightbox.note && <p className="text-white text-sm text-center px-2">{lightbox.note}</p>}
             <button
               onClick={() => setLightbox(null)}
-              className="w-full py-2 rounded-xl bg-zinc-700 hover:bg-zinc-600 text-white text-sm font-medium transition-colors"
+              className="w-full py-2 rounded-xl bg-foreground/20 hover:bg-foreground/30 text-white text-sm font-medium transition-colors"
             >
               Cerrar
             </button>

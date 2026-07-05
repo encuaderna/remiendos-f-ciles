@@ -59,7 +59,7 @@ export default function Onboarding({ onFinish }) {
             <div
               key={i}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === step ? "w-8 bg-amber-500" : i < step ? "w-2 bg-amber-300" : "w-2 bg-zinc-300 dark:bg-zinc-700"
+                i === step ? "w-8 bg-primary" : i < step ? "w-2 bg-primary/50" : "w-2 bg-border"
               }`}
             />
           ))}
@@ -67,7 +67,7 @@ export default function Onboarding({ onFinish }) {
 
         <div className="text-center space-y-2">
           <span className="text-5xl">{current.emoji}</span>
-          <h2 className="font-heading text-xl font-bold text-zinc-900 dark:text-zinc-100">{current.question}</h2>
+          <h2 className="font-heading text-xl font-bold text-foreground">{current.question}</h2>
         </div>
 
         <div className="space-y-3">
@@ -75,16 +75,16 @@ export default function Onboarding({ onFinish }) {
             <button
               key={opt.value}
               onClick={() => select(opt.value)}
-              className="w-full text-left bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-4 hover:border-amber-400 hover:shadow-md transition-all group"
+              className="w-full text-left bg-card border border-border rounded-2xl p-4 hover:border-primary hover:shadow-md transition-all group"
             >
-              <p className="font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-amber-700 dark:group-hover:text-amber-400">{opt.label}</p>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">{opt.desc}</p>
+              <p className="font-semibold text-foreground group-hover:text-primary">{opt.label}</p>
+              <p className="text-sm text-muted-foreground mt-0.5">{opt.desc}</p>
             </button>
           ))}
         </div>
 
         {step > 0 && (
-          <button onClick={() => setStep(step - 1)} className="w-full text-center text-sm text-zinc-400 hover:text-zinc-600">
+          <button onClick={() => setStep(step - 1)} className="w-full text-center text-sm text-muted-foreground hover:text-foreground">
             ← Volver
           </button>
         )}
