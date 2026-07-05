@@ -65,17 +65,25 @@ export default function GuideDetail() {
   const shareText = `🧵 Aprendí a "${guide.title}" con Remiendos Fáciles. ¡Dale una segunda vida a tu ropa!`;
 
   const handleShare = async () => {
-    if (navigator.share) {
-      await navigator.share({ title: guide.title, text: shareText, url: shareUrl });
-    } else {
-      setShowShareMenu((v) => !v);
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: guide.title, text: shareText, url: shareUrl });
+      } else {
+        setShowShareMenu((v) => !v);
+      }
+    } catch (e) {
+      // User cancelled — no action needed
     }
   };
 
   const copyLink = async () => {
-    await navigator.clipboard.writeText(shareUrl);
-    setCopied(true);
-    setTimeout(() => { setCopied(false); setShowShareMenu(false); }, 2000);
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => { setCopied(false); setShowShareMenu(false); }, 2000);
+    } catch (e) {
+      setShowShareMenu(false);
+    }
   };
 
   const easierGuide = guide.easier ? GUIDES.find((g) => g.id === guide.easier) : null;

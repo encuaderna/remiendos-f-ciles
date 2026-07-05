@@ -1,19 +1,25 @@
 import React, { useState } from "react";
-import { Share2, X } from "lucide-react";
+import { Share2, X, CheckCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function CompletionModal({ guide, onClose }) {
   const [shareText, setShareText] = useState(
     `¡Acabo de aprender a "${guide.title}" con Remiendos Fáciles 🧵 ¡Dale una segunda vida a tu ropa!`
   );
+  const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
     const url = window.location.href;
-    if (navigator.share) {
-      await navigator.share({ title: guide.title, text: shareText, url });
-    } else {
-      await navigator.clipboard.writeText(shareText + " " + url);
-      alert("¡Copiado al portapapeles!");
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: guide.title, text: shareText, url });
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareText + " " + url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      }
+    } catch (e) {
+      // User cancelled or permission denied — no action needed
     }
   };
 
@@ -47,7 +53,8 @@ export default function CompletionModal({ guide, onClose }) {
             onClick={handleShare}
             className="flex-1 bg-amber-600 hover:bg-amber-700 text-white rounded-xl flex items-center justify-center gap-2"
           >
-            <Share2 className="h-4 w-4" /> Compartir logro
+            {copied ? <CheckCheck className="h-4 w-4" /> : <Share2 className="h-4 w-4" />}
+            {copied ? "¡Copiado!" : "Compartir logro"}
           </Button>
           <Button
             variant="ghost"
