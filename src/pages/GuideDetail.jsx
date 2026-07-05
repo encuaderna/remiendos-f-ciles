@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Check, AlertTriangle, Lightbulb, Package } from "lucide-react";
+import { ArrowLeft, Check, AlertTriangle, Lightbulb, Package, Share2, Copy, CheckCheck } from "lucide-react";
 import { GUIDES, LEVELS } from "@/lib/guides-data";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,8 @@ export default function GuideDetail() {
   const { id } = useParams();
   const guide = GUIDES.find((g) => g.id === id);
   const [completed, setCompleted] = useLocalStorage("remiendos-completed", []);
+  const [showShareMenu, setShowShareMenu] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   if (!guide) {
     return (
@@ -20,6 +22,24 @@ export default function GuideDetail() {
   }
 
   const isDone = completed.includes(guide.id);
+
+  const shareUrl = window.location.href;
+  const shareText = `🧵 Aprendí a "${guide.title}" con Remiendos Fáciles. ¡Dale una segunda vida a tu ropa!`;
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      await navigator.share({ title: guide.title, text: shareText, url: shareUrl });
+    } else {
+      setShowShareMenu((v) => !v);
+    }
+  };
+
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => { setCopied(false); setShowShareMenu(false); }, 2000);
+  };
+
   const toggleDone = () => {
     setCompleted((prev) =>
       prev.includes(guide.id) ? prev.filter((x) => x !== guide.id) : [...prev, guide.id]
@@ -34,9 +54,50 @@ export default function GuideDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/guias" className="inline-flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200">
-        <ArrowLeft className="h-4 w-4" /> Volver a guías
-      </Link>
+      <div className="flex items-center justify-between">
+        <Link to="/guias" className="inline-flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200">
+          <ArrowLeft className="h-4 w-4" /> Volver a guías
+        </Link>
+
+        <div className="relative">
+          <button
+            onClick={handleShare}
+            className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+          >
+            <Share2 className="h-4 w-4" /> Compartir
+          </button>
+
+          {showShareMenu && (
+            <div className="absolute right-0 top-8 z-50 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-lg p-2 w-48 space-y-1">
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setShowShareMenu(false)}
+                className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+              >
+                <span>💬</span> WhatsApp
+              </a>
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setShowShareMenu(false)}
+                className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+              >
+                <span>𝕏</span> Twitter / X
+              </a>
+              <button
+                onClick={copyLink}
+                className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+              >
+                {copied ? <CheckCheck className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
+                {copied ? 'Link copiado' : 'Copiar link'}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
 
       <div>
         <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${levelColors[guide.level]}`}>
