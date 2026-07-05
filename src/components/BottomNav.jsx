@@ -1,11 +1,11 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, BookOpen, Recycle, ClipboardCheck, Wrench } from "lucide-react";
+import { Home, BookOpen, Recycle, ClipboardCheck, Sparkles } from "lucide-react";
 
 const NAV_ITEMS = [
   { path: "/", label: "Inicio", icon: Home },
-  { path: "/herramientas", label: "Herramientas", icon: Wrench },
   { path: "/guias", label: "Guías", icon: BookOpen },
+  { path: "/inspiracion", label: "Tablero", icon: Sparkles },
   { path: "/reciclaje", label: "Reciclaje", icon: Recycle },
   { path: "/progreso", label: "Progreso", icon: ClipboardCheck },
 ];
