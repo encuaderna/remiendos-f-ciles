@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, Trash2, ChevronRight, Heart, ArrowRight, Trophy } from "lucide-react";
+import { Check, Trash2, ChevronRight, Heart, ArrowRight, Trophy, Download } from "lucide-react";
 import { GUIDES, LEVELS, LEARNING_PATHS } from "@/lib/guides-data";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { jsPDF } from "jspdf";
 
 const NOTE_TAGS = ["Me faltó práctica", "Me quedó bien", "Quiero repetir"];
 
@@ -98,13 +99,100 @@ export default function Progress() {
 
   const levels = ["basico", "intermedio", "avanzado"];
 
+  const exportPDF = () => {
+    const doc = new jsPDF();
+    const pageW = doc.internal.pageSize.getWidth();
+    const margin = 16;
+    const maxW = pageW - margin * 2;
+    let y = 20;
+
+    const addLine = (text, opts = {}) => {
+      const { size = 11, bold = false, color = [40, 54, 24], indent = 0 } = opts;
+      doc.setFontSize(size);
+      doc.setFont("helvetica", bold ? "bold" : "normal");
+      doc.setTextColor(...color);
+      const lines = doc.splitTextToSize(text, maxW - indent);
+      lines.forEach((line) => {
+        if (y > 270) { doc.addPage(); y = 20; }
+        doc.text(line, margin + indent, y);
+        y += size * 0.45 + 2;
+      });
+    };
+
+    const gap = (n = 4) => { y += n; };
+
+    // Title
+    addLine("Remiendos Fáciles — Mi progreso y notas", { size: 18, bold: true, color: [95, 141, 78] });
+    addLine(`Exportado el ${new Date().toLocaleDateString("es-CL")}`, { size: 9, color: [120, 120, 120] });
+    gap(6);
+
+    // Summary
+    addLine(`Progreso general: ${done} de ${total} guías (${pct}%)`, { size: 12, bold: true });
+    gap(3);
+    levels.forEach((level) => {
+      const lg = byLevel(level);
+      const ld = lg.filter((g) => completed.includes(g.id)).length;
+      addLine(`${LEVELS[level].label}: ${ld}/${lg.length}`, { size: 10, indent: 4, color: [80, 80, 80] });
+    });
+    gap(8);
+
+    // Guides with notes
+    addLine("Guías completadas", { size: 13, bold: true });
+    gap(3);
+    const completedGuides = GUIDES.filter((g) => completed.includes(g.id));
+    if (completedGuides.length === 0) {
+      addLine("Todavía no completaste ninguna guía.", { size: 10, color: [140, 140, 140] });
+    } else {
+      completedGuides.forEach((guide) => {
+        if (y > 265) { doc.addPage(); y = 20; }
+        addLine(`✓  ${guide.title}`, { size: 11, bold: true });
+        addLine(`${LEVELS[guide.level].label} · ${guide.time}`, { size: 9, indent: 6, color: [120, 120, 120] });
+        const rawNote = notes[guide.id];
+        const noteData = rawNote && typeof rawNote === "string" ? { text: rawNote, tag: "" } : rawNote;
+        if (noteData?.text) {
+          if (noteData.tag) addLine(`Etiqueta: ${noteData.tag}`, { size: 9, indent: 6, color: [95, 141, 78] });
+          addLine(`Nota: ${noteData.text}`, { size: 10, indent: 6, color: [60, 60, 60] });
+        }
+        gap(4);
+      });
+    }
+
+    // Pending guides with notes
+    const pendingWithNotes = GUIDES.filter((g) => !completed.includes(g.id) && notes[g.id]?.text);
+    if (pendingWithNotes.length > 0) {
+      gap(4);
+      addLine("Notas en guías pendientes", { size: 13, bold: true });
+      gap(3);
+      pendingWithNotes.forEach((guide) => {
+        addLine(`○  ${guide.title}`, { size: 11, bold: true });
+        const rawNote = notes[guide.id];
+        const noteData = rawNote && typeof rawNote === "string" ? { text: rawNote, tag: "" } : rawNote;
+        if (noteData?.tag) addLine(`Etiqueta: ${noteData.tag}`, { size: 9, indent: 6, color: [95, 141, 78] });
+        addLine(`Nota: ${noteData.text}`, { size: 10, indent: 6, color: [60, 60, 60] });
+        gap(4);
+      });
+    }
+
+    doc.save(`remiendos-progreso-${new Date().toISOString().slice(0, 10)}.pdf`);
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-heading text-2xl font-bold text-zinc-900 dark:text-zinc-100">Mi progreso y mis notas</h1>
-        <p className="text-zinc-600 dark:text-zinc-400 mt-1 text-sm">
-          Marca las guías que completaste y anota lo que quieras recordar. Todo se guarda en tu navegador.
-        </p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="font-heading text-2xl font-bold text-foreground">Mi progreso y mis notas</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Marca las guías que completaste y anota lo que quieras recordar. Todo se guarda en tu navegador.
+          </p>
+        </div>
+        <button
+          onClick={exportPDF}
+          className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-sm font-medium text-foreground hover:bg-accent transition-colors shadow-sm"
+          title="Exportar a PDF"
+        >
+          <Download className="h-4 w-4 text-primary" />
+          <span className="hidden sm:inline">Exportar PDF</span>
+        </button>
       </div>
 
       {/* Progress overview */}
