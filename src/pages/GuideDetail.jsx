@@ -164,49 +164,49 @@ export default function GuideDetail() {
       </div>
 
       {/* When */}
-      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-4 border border-amber-200 dark:border-amber-800/40">
-        <p className="text-sm font-semibold text-amber-900 dark:text-amber-200 mb-1">¿Cuándo usar esta técnica?</p>
-        <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">{guide.when}</p>
+      <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
+        <p className="text-sm font-semibold text-foreground mb-1">¿Cuándo usar esta técnica?</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{guide.when}</p>
       </div>
 
       {/* Materials */}
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-sm">
-        <h2 className="flex items-center gap-2 font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
-          <Package className="h-5 w-5 text-zinc-500" /> Materiales necesarios
+      <div className="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h2 className="flex items-center gap-2 font-semibold text-foreground mb-3">
+          <Package className="h-5 w-5 text-muted-foreground" /> Materiales necesarios
         </h2>
         <ul className="space-y-1.5">
           {guide.materials.map((m, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
-              <span className="text-amber-500 mt-0.5">•</span> {m}
+            <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
+              <span className="text-primary mt-0.5">•</span> {m}
             </li>
           ))}
         </ul>
       </div>
 
       {/* Steps */}
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-sm">
-        <h2 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Paso a paso</h2>
+      <div className="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h2 className="font-semibold text-foreground mb-4">Paso a paso</h2>
         <ol className="space-y-4">
           {guide.steps.map((step, i) => (
             <li key={i} className="flex gap-3">
-              <span className="flex-shrink-0 w-7 h-7 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 flex items-center justify-center text-sm font-bold">
+              <span className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/15 text-primary flex items-center justify-center text-sm font-bold">
                 {i + 1}
               </span>
-              <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed pt-0.5">{step}</p>
+              <p className="text-sm text-foreground/80 leading-relaxed pt-0.5">{step}</p>
             </li>
           ))}
         </ol>
       </div>
 
       {/* Mistakes */}
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-sm">
-        <h2 className="flex items-center gap-2 font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
-          <AlertTriangle className="h-5 w-5 text-rose-500" /> Errores comunes
+      <div className="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h2 className="flex items-center gap-2 font-semibold text-foreground mb-3">
+          <AlertTriangle className="h-5 w-5 text-destructive" /> Errores comunes
         </h2>
         <ul className="space-y-2">
           {guide.mistakes.map((m, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
-              <span className="text-rose-500 mt-0.5">✗</span>
+            <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
+              <span className="text-destructive mt-0.5">✗</span>
               <span className="leading-relaxed">{m}</span>
             </li>
           ))}
@@ -214,14 +214,14 @@ export default function GuideDetail() {
       </div>
 
       {/* Tips */}
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-sm">
-        <h2 className="flex items-center gap-2 font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
-          <Lightbulb className="h-5 w-5 text-amber-500" /> Consejos útiles
+      <div className="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h2 className="flex items-center gap-2 font-semibold text-foreground mb-3">
+          <Lightbulb className="h-5 w-5 text-primary" /> Consejos útiles
         </h2>
         <ul className="space-y-2">
           {guide.tips.map((t, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
-              <span className="text-amber-500 mt-0.5">💡</span>
+            <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
+              <span className="text-primary mt-0.5">💡</span>
               <span className="leading-relaxed">{t}</span>
             </li>
           ))}
@@ -236,8 +236,8 @@ export default function GuideDetail() {
         onClick={toggleDone}
         className={`w-full py-6 text-base rounded-2xl font-semibold transition-colors ${
           isDone
-            ? "bg-emerald-600 hover:bg-emerald-700 text-white"
-            : "bg-amber-600 hover:bg-amber-700 text-white"
+            ? "bg-primary/70 hover:bg-primary/60 text-primary-foreground"
+            : "bg-primary hover:bg-primary/90 text-primary-foreground"
         }`}
       >
         {isDone ? (
@@ -251,26 +251,26 @@ export default function GuideDetail() {
       {(easierGuide || nextGuide) && (
         <div className="space-y-3">
           {easierGuide && (
-            <div className="bg-zinc-50 dark:bg-zinc-900/60 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-2">Si te resultó difícil, prueba antes:</p>
+            <div className="bg-card rounded-2xl p-4 border border-border">
+              <p className="text-xs text-muted-foreground mb-2">Si te resultó difícil, prueba antes:</p>
               <Link
                 to={`/guias/${easierGuide.id}`}
-                className="flex items-center justify-between text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:text-amber-700 dark:hover:text-amber-400 group"
+                className="flex items-center justify-between text-sm font-medium text-foreground hover:text-primary group"
               >
                 <span>← {easierGuide.title}</span>
-                <span className="text-xs text-zinc-400">{easierGuide.time}</span>
+                <span className="text-xs text-muted-foreground">{easierGuide.time}</span>
               </Link>
             </div>
           )}
           {nextGuide && (
-            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-4 border border-amber-200 dark:border-amber-800/40">
-              <p className="text-xs text-amber-700 dark:text-amber-400 mb-2">¿Lista para más? Continúa con:</p>
+            <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
+              <p className="text-xs text-primary mb-2">¿Lista para más? Continúa con:</p>
               <Link
                 to={`/guias/${nextGuide.id}`}
-                className="flex items-center justify-between text-sm font-medium text-amber-900 dark:text-amber-200 hover:text-amber-700 group"
+                className="flex items-center justify-between text-sm font-medium text-foreground hover:text-primary group"
               >
                 <span>{nextGuide.title} →</span>
-                <span className="text-xs text-amber-600 dark:text-amber-500">{nextGuide.time}</span>
+                <span className="text-xs text-muted-foreground">{nextGuide.time}</span>
               </Link>
             </div>
           )}

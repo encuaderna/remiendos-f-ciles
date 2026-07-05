@@ -87,43 +87,43 @@ export default function Progress() {
       </div>
 
       {/* Progress overview */}
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-4">
+      <div className="bg-card rounded-2xl p-5 border border-border shadow-sm space-y-4">
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Progreso general</span>
-            <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">{done}/{total} guías ({pct}%)</span>
+            <span className="text-sm font-medium text-foreground">Progreso general</span>
+            <span className="text-sm font-semibold text-primary">{done}/{total} guías ({pct}%)</span>
           </div>
-          <div className="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-3">
+          <div className="w-full bg-muted/50 rounded-full h-3">
             <div
-              className="bg-amber-500 dark:bg-amber-400 h-3 rounded-full transition-all duration-500"
+              className="bg-primary h-3 rounded-full transition-all duration-500"
               style={{ width: `${pct}%` }}
             />
           </div>
           {done === total && total > 0 && (
-            <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-2 font-medium">🎉 ¡Completaste todas las guías! Eres un experto en remiendos.</p>
+            <p className="text-sm text-primary mt-2 font-medium">🎉 ¡Completaste todas las guías! Eres un experto en remiendos.</p>
           )}
         </div>
 
         {/* By level bars */}
         <div>
-          <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide mb-2">Por nivel</p>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Por nivel</p>
           <div className="space-y-2">
             {levels.map((level) => {
               const levelGuides = byLevel(level);
               const levelDone = levelGuides.filter((g) => completed.includes(g.id)).length;
               const levelPct = levelGuides.length > 0 ? Math.round((levelDone / levelGuides.length) * 100) : 0;
               const barColors = {
-                basico: "bg-emerald-500",
-                intermedio: "bg-amber-500",
-                avanzado: "bg-rose-500",
+                basico: "bg-primary",
+                intermedio: "bg-primary/70",
+                avanzado: "bg-primary/40",
               };
               return (
                 <div key={level} className="flex items-center gap-3">
-                  <span className="text-xs text-zinc-500 dark:text-zinc-400 w-24 flex-shrink-0">{LEVELS[level].emoji} {LEVELS[level].label}</span>
-                  <div className="flex-1 bg-zinc-200 dark:bg-zinc-700 rounded-full h-2">
+                  <span className="text-xs text-muted-foreground w-24 flex-shrink-0">{LEVELS[level].emoji} {LEVELS[level].label}</span>
+                  <div className="flex-1 bg-muted/50 rounded-full h-2">
                     <div className={`${barColors[level]} h-2 rounded-full transition-all duration-500`} style={{ width: `${levelPct}%` }} />
                   </div>
-                  <span className="text-xs text-zinc-400 w-10 text-right">{levelDone}/{levelGuides.length}</span>
+                  <span className="text-xs text-muted-foreground w-10 text-right">{levelDone}/{levelGuides.length}</span>
                 </div>
               );
             })}
@@ -133,26 +133,26 @@ export default function Progress() {
 
       {/* Continue where you left off */}
       {lastGuide && (
-        <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-4 border border-amber-200 dark:border-amber-800/40">
-          <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 mb-2 uppercase tracking-wide">Continuar donde quedaste</p>
+        <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
+          <p className="text-xs font-semibold text-primary mb-2 uppercase tracking-wide">Continuar donde quedaste</p>
           <Link to={`/guias/${lastGuide.id}`} className="flex items-center justify-between group">
             <div>
-              <p className="font-medium text-zinc-900 dark:text-zinc-100 text-sm">{lastGuide.title}</p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{lastGuide.time}</p>
+              <p className="font-medium text-foreground text-sm">{lastGuide.title}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{lastGuide.time}</p>
             </div>
-            <ArrowRight className="h-5 w-5 text-amber-600 dark:text-amber-400 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       )}
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 bg-zinc-100 dark:bg-zinc-800 rounded-xl">
+      <div className="flex gap-1 p-1 bg-muted/40 rounded-xl">
         {[{ key: "todas", label: "Todas las guías" }, { key: "favoritas", label: `❤️ Mis favoritas (${favGuides.length})` }].map(({ key, label }) => (
           <button
             key={key}
             onClick={() => setActiveTab(key)}
             className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${
-              activeTab === key ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm" : "text-zinc-500 dark:text-zinc-400"
+              activeTab === key ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"
             }`}
           >
             {label}
@@ -181,15 +181,15 @@ export default function Progress() {
           return (
             <div
               key={guide.id}
-              className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm"
+              className="bg-card rounded-2xl p-4 border border-border shadow-sm"
             >
               <div className="flex items-start gap-3">
                 <button
                   onClick={() => toggleGuide(guide.id)}
                   className={`flex-shrink-0 w-7 h-7 rounded-lg border-2 flex items-center justify-center transition-colors mt-0.5 ${
                     isDone
-                      ? "bg-emerald-500 border-emerald-500 text-white"
-                      : "border-zinc-300 dark:border-zinc-600 hover:border-amber-400"
+                      ? "bg-primary border-primary text-primary-foreground"
+                      : "border-border hover:border-primary"
                   }`}
                   aria-label={isDone ? "Desmarcar guía" : "Marcar como completada"}
                 >
@@ -204,7 +204,7 @@ export default function Progress() {
                     {isFav && <Heart className="h-3.5 w-3.5 text-rose-500 fill-rose-500" />}
                   </div>
                   <div className="flex items-center justify-between">
-                    <h3 className={`font-medium text-sm ${isDone ? "text-zinc-400 dark:text-zinc-500 line-through" : "text-zinc-900 dark:text-zinc-100"}`}>
+                    <h3 className={`font-medium text-sm ${isDone ? "text-muted-foreground line-through" : "text-foreground"}`}>
                       {guide.title}
                     </h3>
                     <Link to={`/guias/${guide.id}`} className="text-amber-600 dark:text-amber-400 hover:underline ml-2 flex-shrink-0">

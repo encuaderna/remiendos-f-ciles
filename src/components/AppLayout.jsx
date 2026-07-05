@@ -13,7 +13,7 @@ export default function AppLayout() {
   }, [dark]);
 
   return (
-    <div className="min-h-screen bg-amber-50/30 dark:bg-zinc-950 transition-colors">
+    <div className="min-h-screen bg-background transition-colors">
       <SideNav dark={dark} setDark={setDark} />
       <MobileHeader dark={dark} setDark={setDark} />
       <main className="md:ml-56 lg:ml-64 pb-20 md:pb-8">
