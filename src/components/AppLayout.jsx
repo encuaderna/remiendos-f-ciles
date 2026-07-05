@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import BottomNav from "@/components/BottomNav";
 import SideNav from "@/components/SideNav";
@@ -8,7 +8,7 @@ import { useLocalStorage } from "@/lib/useLocalStorage";
 export default function AppLayout() {
   const [dark, setDark] = useLocalStorage("remiendos-dark", false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
 
